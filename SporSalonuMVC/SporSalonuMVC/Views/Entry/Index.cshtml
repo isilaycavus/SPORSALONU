@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Üye Giriş Ekranı";
+}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-lg p-4 rounded-4 border-top border-4 border-warning" style="width: 100%; max-width: 500px; background-color: #fff;">
+        <div class="text-center mb-4">
+           
+            <h3 class="fw-bold text-dark mt-3">Üye Kart Girişi</h3>
+            <p class="text-muted">Kartınızı okutun veya numarasını girin</p>
+        </div>
+
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Kart Numarası:</label>
+                <input type="text" name="cardNumber" class="form-control form-control-lg" placeholder="16 haneli kart numarası" required />
+            </div>
+
+            <button type="submit" class="btn btn-warning w-100 fw-bold py-2 shadow-sm">
+                <i class="fas fa-id-card me-2"></i> Kartı Oku
+            </button>
+        </form>
+
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-info mt-4 text-center">
+                @ViewBag.Message
+            </div>
+        }
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        body {
+            background: linear-gradient(to right, #1f4037, #99f2c8);
+        }
+
+        .card {
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @@keyframes fadeIn {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        input::placeholder {
+            font-size: 0.95rem;
+            color: #aaa;
+        }
+    </style>
+}

@@ -1,0 +1,145 @@
+﻿@model SporSalonuMVC.Models.ReportsViewModel
+
+@{
+    ViewData["Title"] = "Raporlar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">📊 Yönetim Raporları</h2>
+
+    <div class="row g-4">
+        <!-- Kullanıcı Grafiği -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">📈 Aylık Kullanıcı Artışı</h5>
+                    <canvas id="userChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gelir Grafiği -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">💰 Aylık Gelir</h5>
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paket Dağılımı -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">📦 Paket Dağılımı</h5>
+                    <canvas id="packageChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Üyelik Durumu -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">🕒 Üyelik Durumu</h5>
+                    <canvas id="membershipChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Kullanıcı Grafiği
+        new Chart(document.getElementById("userChart"), {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.UsersPerMonth.Keys)),
+                datasets: [{
+                    label: 'Kayıtlı Kullanıcı Sayısı',
+                    data: @Html.Raw(Json.Serialize(Model.UsersPerMonth.Values)),
+                    borderColor: '#007bff',
+                    backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true },
+                    title: { display: false }
+                }
+            }
+        });
+
+        // Aylık Gelir
+        new Chart(document.getElementById("revenueChart"), {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.RevenuePerMonth.Keys)),
+                datasets: [{
+                    label: '₺ Aylık Gelir',
+                    data: @Html.Raw(Json.Serialize(Model.RevenuePerMonth.Values)),
+                    backgroundColor: '#28a745'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Paket Dağılımı
+        new Chart(document.getElementById("packageChart"), {
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.PackageDistribution.Keys)),
+                datasets: [{
+                    label: 'Paket Dağılımı',
+                    data: @Html.Raw(Json.Serialize(Model.PackageDistribution.Values)),
+                    backgroundColor: ['#007bff', '#ff6384', '#ffc107', '#17a2b8']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Üyelik Durumu
+        new Chart(document.getElementById("membershipChart"), {
+            type: 'doughnut',
+            data: {
+                labels: ['Aktif', 'Pasif'],
+                datasets: [{
+                    data: [@Model.ActiveMemberships, @Model.ExpiredMemberships],
+                    backgroundColor: ['#28a745', '#dc3545']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+}

@@ -1,0 +1,75 @@
+﻿@model List<StudentDocument>
+@{
+    ViewData["Title"] = "Öğrenci Belgelerim";
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Yüklediğiniz Öğrenci Belgeleri</h2>
+        <p class="text-muted">Yüklediğiniz belgelerin durumunu buradan takip edebilirsiniz.</p>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover text-center align-middle shadow-sm bg-white">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Dosya</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Count > 0)
+                {
+                    int index = 1;
+                    foreach (var doc in Model)
+                    {
+                        <tr>
+                            <td>@index</td>
+                            <td>
+                                <a href="@doc.FilePath" target="_blank" class="text-decoration-none text-primary">
+                                    Dosyayı Görüntüle
+                                </a>
+                            </td>
+                            <td>
+                                @switch (doc.Status)
+                                {
+                                    case "Onaylandı":
+                                        <span class="badge bg-success">Onaylandı</span>
+                                        break;
+                                    case "Reddedildi":
+                                        <span class="badge bg-danger">Reddedildi</span>
+                                        break;
+                                    default:
+                                        <span class="badge bg-warning text-dark">Beklemede</span>
+                                        break;
+                                }
+                            </td>
+                        </tr>
+                        index++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3" class="text-muted">Henüz yüklenmiş bir belge bulunmamaktadır.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .table td, .table th {
+            vertical-align: middle;
+        }
+
+        .btn-outline-primary:hover {
+            color: white;
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+    </style>
+}

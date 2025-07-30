@@ -1,0 +1,27 @@
+﻿@model List<Reservation>
+
+<h2>Katılımcı Listesi</h2>
+
+<p><strong>Ders:</strong> @ViewBag.ClassName</p>
+<p><strong>Eğitmen:</strong> @ViewBag.TrainerName</p>
+<p><strong>Tarih:</strong> @((DateTime)ViewBag.Schedule).ToString("dd.MM.yyyy HH:mm")</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Ad Soyad</th>
+            <th>E-posta</th>
+            <th>Kart Numarası</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.User!.FullName</td>
+                <td>@r.User.Email</td>
+                <td>@r.User.UserCards?.FirstOrDefault(c => c.IsActive)?.CardNumber</td>
+            </tr>
+        }
+    </tbody>
+</table>

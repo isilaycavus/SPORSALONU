@@ -1,0 +1,44 @@
+﻿@model Trainer
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0" style="border-radius: 16px;">
+                <div class="card-header text-white text-center" style="background: var(--gradient-primary); border-radius: 16px 16px 0 0;">
+                    <h3 class="fw-bold mb-0"><i class="fas fa-user-plus me-2"></i> Eğitmen Ekle</h3>
+                </div>
+                <div class="card-body bg-light" style="border-radius: 0 0 16px 16px;">
+                    <form asp-action="Create" method="post">
+                        <div class="mb-3">
+                            <label asp-for="FullName" class="form-label fw-semibold">Ad Soyad</label>
+                            <input asp-for="FullName" class="form-control" placeholder="Örn: Ferdi Gül" />
+                            <span asp-validation-for="FullName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Specialty" class="form-label fw-semibold">Uzmanlık Alanı</label>
+                            <input asp-for="Specialty" class="form-control" placeholder="Örn: Fitness" />
+                            <span asp-validation-for="Specialty" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label fw-semibold">Hakkında</label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Eğitmen hakkında kısa bilgi..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-warning fw-bold px-5">
+                                <i class="fas fa-save me-2"></i> Kaydet
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

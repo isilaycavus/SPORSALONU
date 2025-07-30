@@ -1,0 +1,165 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = SporSalonuMVC
+build_property.RootNamespace = SporSalonuMVC
+build_property.ProjectDir = C:\Users\emirh\Desktop\stajprojesitasarimdenemesi\SporSalonuMVC\SporSalonuMVC\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\emirh\Desktop\stajprojesitasarimdenemesi\SporSalonuMVC\SporSalonuMVC
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Admin/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Admin/Documents.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRG9jdW1lbnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Admin/EntryLogs.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRW50cnlMb2dzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Admin/Reports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUmVwb3J0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Card/Manage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZFxNYW5hZ2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Class/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhc3NcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Class/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhc3NcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Class/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhc3NcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Entry/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW50cnlcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Membership/AllUserMemberships.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVtYmVyc2hpcFxBbGxVc2VyTWVtYmVyc2hpcHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Membership/Available.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVtYmVyc2hpcFxBdmFpbGFibGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Membership/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVtYmVyc2hpcFxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Membership/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVtYmVyc2hpcFxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Membership/History.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVtYmVyc2hpcFxIaXN0b3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Membership/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVtYmVyc2hpcFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Membership/MyMembership.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVtYmVyc2hpcFxNeU1lbWJlcnNoaXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Reservation/AllReservations.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YXRpb25cQWxsUmVzZXJ2YXRpb25zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Reservation/MyReservations.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YXRpb25cTXlSZXNlcnZhdGlvbnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Reservation/Participants.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YXRpb25cUGFydGljaXBhbnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Trainer/Calendar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhaW5lclxDYWxlbmRhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Trainer/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhaW5lclxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Trainer/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhaW5lclxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Trainer/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhaW5lclxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/User/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/User/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/User/MyDocuments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxNeURvY3VtZW50cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/User/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxQcm9maWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/User/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/User/Success.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxTdWNjZXNzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/emirh/Desktop/stajprojesitasarimdenemesi/SporSalonuMVC/SporSalonuMVC/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-le22pskehd

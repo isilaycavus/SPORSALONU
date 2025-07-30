@@ -1,0 +1,242 @@
+﻿@model User
+@{
+    ViewData["Title"] = "Profilim";
+    var userRole = Context.Session.GetString("UserRole");
+    var avatar = string.IsNullOrEmpty(Model.ProfilePhoto)
+        ? "/images/profil.jpg"
+        : $"/images/{Model.ProfilePhoto}";
+    var backgroundImage = "/images/gym4.jpg";
+}
+<div class="background-wrapper">
+    <div class="profile-card">
+
+        <!-- Profil Fotoğrafı ve Kalem -->
+        <div class="profile-avatar-wrapper">
+            <img src="@avatar" alt="Profil Resmi" class="profile-avatar-img" />
+            <form asp-controller="User" asp-action="UploadPhoto" method="post" enctype="multipart/form-data">
+                <label for="profileUpload" class="edit-icon">
+                    <i class="fas fa-pen"></i>
+                </label>
+                <input type="file" id="profileUpload" name="ProfilePhotoFile" accept="image/*" class="d-none" onchange="this.form.submit()" />
+            </form>
+        </div>
+
+        <h2>@Model.FullName</h2>
+        <p class="description">Harika gidiyorsun, devam et!</p>
+
+        <div class="info-grid">
+            <!-- Email -->
+            <div class="info-item">
+                <div class="icon-wrapper"><i class="fas fa-envelope"></i></div>
+                <div class="info-content">
+                    <strong>Email Adresi</strong>
+                    <span>@Model.Email</span>
+                </div>
+            </div>
+
+            <!-- Kart Numarası -->
+            <div class="info-item">
+                <div class="icon-wrapper"><i class="fas fa-id-card"></i></div>
+                <div class="info-content">
+                    <strong>Kart Numarası</strong>
+                    <span>@Model.UserCards?.FirstOrDefault(c => c.IsActive)?.CardNumber</span>
+                </div>
+            </div>
+
+            @if (Model.UserCards != null && Model.UserCards.Count > 1)
+            {
+                <button class="btn btn-outline-warning w-100 mt-2" id="toggleCardsBtn" type="button">
+                    💳 Diğer Kartlarım
+                </button>
+
+                <ul id="otherCardsList" class="list-group mt-2 d-none">
+                    @foreach (var card in Model.UserCards.Skip(1))
+                    {
+                        <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
+                            @card.CardNumber
+                            <span class="badge bg-success">Aktif</span>
+                        </li>
+                    }
+                </ul>
+            }
+
+            @if (userRole == "User")
+            {
+                <form asp-controller="User" asp-action="UploadStudentDocument" method="post" enctype="multipart/form-data" class="w-100">
+                    <div class="info-item upload-button" onclick="document.getElementById('studentDocument').click()">
+                        <div class="icon-wrapper"><i class="fas fa-upload"></i></div>
+                        <div class="info-content">
+                            <strong>Öğrenci Belgesi</strong>
+                            <span>Dosya seç ve yükle</span>
+                        </div>
+                    </div>
+                    <input type="file" id="studentDocument" name="studentDocument" class="d-none" onchange="this.form.submit()" />
+                </form>
+
+                @if (TempData["UploadMessage"] != null)
+                {
+                    <div class="alert alert-success mt-3 text-center">@TempData["UploadMessage"]</div>
+                }
+
+                <div class="info-item">
+                    <div class="icon-wrapper"><i class="fas fa-file-alt"></i></div>
+                    <div class="info-content">
+                        <strong>Öğrenci Belgelerim</strong>
+                        <a href="@Url.Action("MyDocuments", "User")" style="color: #ffc107; font-weight: 600;">Belgeleri Gör</a>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background: url('@backgroundImage') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        body {
+            padding-top: 90px;
+        }
+
+        .background-wrapper {
+            min-height: calc(100vh - 90px);
+            display: flex;
+            align-items: flex-start; /* içerikleri yukarı yasla */
+            justify-content: center;
+            padding-top: 50px;
+        }
+
+        .profile-card {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+            color: white;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+        }
+
+        .profile-avatar-wrapper {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .profile-avatar-img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            object-fit: cover;
+        }
+
+        .edit-icon {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            transform: translate(30%, 30%);
+            background: #ffc107;
+            color: black;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            transition: all 0.2s ease;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+        }
+
+            .edit-icon:hover {
+                background: #e0a800;
+                transform: scale(1.1) translate(30%, 30%);
+            }
+
+        .description {
+            color: #cccccc;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .info-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin-top: 2rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.2rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.3s ease;
+        }
+
+            .info-item:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+        .icon-wrapper {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+
+            .icon-wrapper i {
+                color: white;
+                font-size: 1.2rem;
+            }
+
+        .info-content strong {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #bbbbbb;
+            letter-spacing: 0.5px;
+        }
+
+        .info-content span {
+            font-size: 1.05rem;
+            color: white;
+            font-weight: 500;
+        }
+
+        .upload-button {
+            cursor: pointer;
+        }
+
+        .alert {
+            font-size: 0.95rem;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.getElementById("toggleCardsBtn")?.addEventListener("click", function () {
+            const list = document.getElementById("otherCardsList");
+            if (list) list.classList.toggle("d-none");
+        });
+    </script>
+}

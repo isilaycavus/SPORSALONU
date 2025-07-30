@@ -1,0 +1,76 @@
+﻿@model List<Reservation>
+
+@{
+    ViewData["Title"] = "Tüm Rezervasyonlar";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 fw-bold text-warning">
+        <i class="fas fa-calendar-check me-2"></i> Tüm Rezervasyonlar
+    </h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">Henüz rezervasyon yapılmamış.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered align-middle shadow-sm text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Kullanıcı</th>
+                        <th>Email</th>
+                        <th>Ders</th>
+                        <th>Eğitmen</th>
+                        <th>Tarih</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model)
+                    {
+                        <tr>
+                            <td>@r.User?.FullName</td>
+                            <td>@r.User?.Email</td>
+                            <td>@r.Class?.Name</td>
+                            <td>@r.Class?.Trainer?.FullName</td>
+                            <td>@r.Class?.Schedule.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#cancelModal-@r.Id">
+                                    <i class="fas fa-times"></i> İptal Et
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="cancelModal-@r.Id" tabindex="-1" aria-labelledby="cancelLabel-@r.Id" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-danger text-white">
+                                                <h5 class="modal-title" id="cancelLabel-@r.Id">Rezervasyon İptali</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>
+                                                    <strong>@r.User?.FullName</strong> kullanıcısının 
+                                                    <strong>@r.Class?.Name</strong> dersi için 
+                                                    <strong>@r.Class?.Schedule.ToString("dd.MM.yyyy HH:mm")</strong> tarihinde yaptığı rezervasyonu iptal etmek istediğinize emin misiniz?
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form asp-action="Cancel" asp-controller="Reservation" method="post">
+                                                    <input type="hidden" name="id" value="@r.Id" />
+                                                    <button type="submit" class="btn btn-danger">Evet, İptal Et</button>
+                                                </form>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

@@ -1,0 +1,243 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Anasayfa";
+}
+
+@section Styles {
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #121212;
+            color: #f1f1f1;
+        }
+
+        main {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+
+        .hero {
+            background-image: url('/images/home.jpg');
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-top: -90px; /* header yüksekliği kadar yukarı çek */
+        }
+
+
+            .hero::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.6);
+                z-index: 1;
+            }
+
+        .hero-inner {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 1200px;
+            padding: 0 1rem;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+        }
+
+        .highlight-orange {
+            color: #ff6b35;
+        }
+
+        .section-title {
+            font-weight: 800;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .section-subtitle {
+            color: #bbbbbb;
+            margin-bottom: 2rem;
+        }
+
+        .feature-box {
+            background: #1e1e1e;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
+            .feature-box i {
+                font-size: 2rem;
+                color: #ff6b35;
+                margin-bottom: 1rem;
+            }
+
+        .gallery-img {
+            height: 250px;
+            object-fit: cover;
+            border-radius: 0.75rem;
+            width: 100%;
+        }
+
+        .sport-card img {
+            height: 200px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+        }
+
+        .sport-card {
+            background: #1e1e1e;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+            .sport-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            }
+    </style>
+}
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-inner">
+        <h1><span class="highlight-orange">Güçlü Ol.</span> Sağlıklı Ol. <span class="highlight-orange">Mutlu Ol.</span></h1>
+        <p class="lead mt-3">Hayalindeki vücuda ulaşmak için gereken her şey burada.</p>
+    </div>
+</section>
+
+<!-- Neden Biz -->
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="section-title">Neden Bizi Seçmelisiniz?</h2>
+        <p class="section-subtitle">Modern ekipmanlar ve uzman kadromuzla yanınızdayız.</p>
+        <div class="row g-4 mt-4">
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <i class="fas fa-user-tie"></i>
+                    <h5>Profesyonel Antrenörler</h5>
+                    <p>Bire bir ilgi ve uzman eğitim desteği</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <i class="fas fa-dumbbell"></i>
+                    <h5>Son Teknoloji Ekipmanlar</h5>
+                    <p>Modern salon ve cihaz imkanları</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <i class="fas fa-clock"></i>
+                    <h5>24/7 Açık Salon</h5>
+                    <p>Günün her saati spor yapabilirsiniz</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Salonumuzdan Görseller -->
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="section-title">Salonumuzdan Görseller</h2>
+        <p class="section-subtitle">Modern ekipmanlarımız ve ferah ortamımız</p>
+        <div class="row g-4">
+            <div class="col-md-3 col-sm-6">
+                <img src="@Url.Content("~/images/sporsalonugiyinmeodasi.jpg")" class="gallery-img" alt="Galeri 1" />
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <img src="@Url.Content("~/images/sporsalonuickismi.jpg")" class="gallery-img" alt="Galeri 2" />
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <img src="@Url.Content("~/images/sporsalonuickismi2.jpg")" class="gallery-img" alt="Galeri 3" />
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <img src="@Url.Content("~/images/sporsalonuickismi3.jpg")" class="gallery-img" alt="Galeri 4" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Spor Branşları -->
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="section-title">Tüm Spor Branşları</h2>
+        <p class="section-subtitle">Seviyene uygun branşla spora başla</p>
+        <div class="row g-4 mt-4">
+            <div class="col-md-4">
+                <div class="sport-card">
+                    <img src="@Url.Content("~/images/pilatesssssss.jpg")" class="gallery-img" alt="Pilates" />
+                    <div class="p-3">
+                        <h5>Pilates</h5>
+                        <p>Profesyonel çalışma alanları</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="sport-card">
+                    <img src="@Url.Content("~/images/boks.jpg")" class="gallery-img" alt="Boks" />
+                    <div class="p-3">
+                        <h5>Boks</h5>
+                        <p>Tüm seviyeler için uygun antrenmanlar</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="sport-card">
+                    <img src="@Url.Content("~/images/fitness.jpg")" class="gallery-img" alt="Fitness" />
+                    <div class="p-3">
+                        <h5>Fitness</h5>
+                        <p>Güç ve dayanıklılık odaklı programlar</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="sport-card">
+                    <img src="@Url.Content("~/images/basketbolll.jpg")" class="gallery-img" alt="Basketbol" />
+                    <div class="p-3">
+                        <h5>Basketbol</h5>
+                        <p>Takım ruhunu güçlendirin</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="sport-card">
+                    <img src="@Url.Content("~/images/yuzmeeee.jpg")" class="gallery-img" alt="Yüzme" />
+                    <div class="p-3">
+                        <h5>Yüzme</h5>
+                        <p>Tam vücut egzersizi</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="sport-card">
+                    <img src="@Url.Content("~/images/voleybol.jpg")" class="gallery-img" alt="Voleybol" />
+                    <div class="p-3">
+                        <h5>Voleybol</h5>
+                        <p>Koordinasyon ve esneklik</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

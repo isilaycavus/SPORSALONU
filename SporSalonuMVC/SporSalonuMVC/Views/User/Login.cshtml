@@ -1,0 +1,118 @@
+﻿@model User
+@{
+    ViewData["Title"] = "Giriş Yap";
+}
+
+@section Styles {
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: url('/images/g6.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 500px; /* Artırılmış genişlik */
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(14px);
+            border-radius: 20px;
+            padding: 2.8rem 2.5rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+            color: #fff;
+        }
+
+            .login-wrapper h2 {
+                text-align: center;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+            }
+
+            .login-wrapper p {
+                text-align: center;
+                font-size: 0.9rem;
+                color: #ccc;
+                margin-bottom: 1.5rem;
+            }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: #fff;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+            .form-control::placeholder {
+                color: #ddd;
+            }
+
+        .btn-submit {
+            background-color: rgba(255, 255, 255, 0.25);
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            padding: 0.75rem;
+            width: 100%;
+            border-radius: 12px;
+            transition: background 0.3s ease;
+        }
+
+            .btn-submit:hover {
+                background-color: rgba(255, 255, 255, 0.4);
+            }
+
+        .text-link {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+            .text-link a {
+                color: #ff8c42;
+                text-decoration: none;
+            }
+
+                .text-link a:hover {
+                    text-decoration: underline;
+                }
+    </style>
+}
+
+<div class="login-wrapper">
+    <h2><i class="fas fa-lock"></i> Giriş Yap</h2>
+    <p>Lütfen e-posta ve şifrenizi girin</p>
+
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage as string))
+    {
+        <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+    }
+
+    <form asp-action="Login" method="post">
+        <label asp-for="Email" class="form-label">E-posta</label>
+        <input asp-for="Email" class="form-control" placeholder="eposta@ornek.com" />
+        <span asp-validation-for="Email" class="text-danger small"></span>
+
+        <label asp-for="Password" class="form-label">Şifre</label>
+        <input asp-for="Password" type="password" class="form-control" placeholder="Şifrenizi girin" />
+        <span asp-validation-for="Password" class="text-danger small"></span>
+
+        <button type="submit" class="btn-submit mt-2">Giriş Yap</button>
+    </form>
+
+    <div class="text-link">
+        Hesabınız yok mu? <a href="/User/Register">Kayıt Ol</a>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

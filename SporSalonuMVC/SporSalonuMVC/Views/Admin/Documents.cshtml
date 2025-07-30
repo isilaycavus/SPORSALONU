@@ -1,0 +1,124 @@
+﻿@model IEnumerable<SporSalonuMVC.Models.StudentDocument>
+
+@{
+    ViewData["Title"] = "Belgeler";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success text-center">@TempData["Success"]</div>
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">📄 Bekleyen Öğrenci Belgeleri</h2>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered text-center align-middle custom-table">
+            <thead class="table-dark">
+                <tr>
+                    <th>Ad Soyad</th>
+                    <th>Belge</th>
+                    <th>Yüklenme Tarihi</th>
+                    <th>Durum</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var doc in Model)
+                {
+                    var statusText = doc.Status?.ToLower() ?? "";
+                    string statusBadge = statusText switch
+                    {
+                        "pending" or "beklemede" => "<span class='badge status-beklemede'>Beklemede</span>",
+                        "approved" or "onaylandı" => "<span class='badge status-onaylandi'>Onaylandı</span>",
+                        "rejected" or "reddedildi" => "<span class='badge status-reddedildi'>Reddedildi</span>",
+                        _ => $"<span class='badge status-other'>{doc.Status}</span>"
+                    };
+
+                    <tr>
+                        <td>@doc.User?.FullName</td>
+                        <td>
+                            <a href="/documents/@System.IO.Path.GetFileName(doc.FilePath)" class="link-primary" target="_blank">
+                                Görüntüle
+                            </a>
+                        </td>
+                        <td>@doc.UploadedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                        <td>@Html.Raw(statusBadge)</td>
+                        <td>
+                            <div class="d-flex flex-wrap justify-content-center gap-1">
+                                <form asp-controller="Admin" asp-action="ApproveDocument" method="post">
+                                    <input type="hidden" name="id" value="@doc.Id" />
+                                    <button type="submit" class="btn btn-success btn-sm">Onayla</button>
+                                </form>
+
+                                <form asp-controller="Admin" asp-action="RejectDocument" method="post">
+                                    <input type="hidden" name="id" value="@doc.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm">Reddet</button>
+                                </form>
+
+                                <form asp-controller="Admin" asp-action="DeleteDocument" method="post" onsubmit="return confirm('Belgeyi silmek istediğinize emin misiniz?')">
+                                    <input type="hidden" name="id" value="@doc.Id" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">Sil</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .custom-table th, .custom-table td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .badge {
+        font-size: 0.85rem;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+
+    .status-beklemede {
+        background-color: #ffc107;
+        color: #000;
+    }
+
+    .status-onaylandi {
+        background-color: #28a745;
+    }
+
+    .status-reddedildi {
+        background-color: #dc3545;
+    }
+
+    .status-other {
+        background-color: #6c757d;
+    }
+
+    .btn-sm {
+        min-width: 80px;
+    }
+
+    @@media (max-width: 768px) {
+        .custom-table td, .custom-table th
+
+    {
+        font-size: 0.9rem;
+        padding: 10px 6px;
+    }
+
+    .btn-sm {
+        width: 100%;
+    }
+
+    .d-flex.flex-wrap {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    }
+</style>

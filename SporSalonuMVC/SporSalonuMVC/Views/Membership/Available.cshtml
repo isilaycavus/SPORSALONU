@@ -1,0 +1,75 @@
+﻿@model List<Membership>
+@using System.Security.Claims
+@using SporSalonuMVC.Models
+@using Microsoft.EntityFrameworkCore  <!-- BU SATIR ÖNEMLİ -->
+@inject SporSalonuDbContext db
+
+
+
+@{
+    ViewData["Title"] = "Üyelik Paketleri";
+
+    var email = Context.Session.GetString("UserEmail");
+    var user = db.Users.Include(u => u.StudentDocuments).FirstOrDefault(u => u.Email == email);
+    var isVerifiedStudent = user?.StudentDocuments?.Any(d => d.Status == "Onaylandı") == true;
+
+}
+
+<div class="container mt-4 mb-5">
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Size Uygun Paketi Seçin</h1>
+        <p class="lead text-muted">Hedeflerinize ulaşmak için ilk adımı atın.</p>
+    </div>
+
+    <div class="row justify-content-center">
+        @foreach (var m in Model)
+        {
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm pricing-card">
+                    <div class="card-header text-center">
+                        <h4 class="my-0 fw-normal">@m.Name</h4>
+                    </div>
+                    <div class="card-body text-center d-flex flex-column">
+                        <h1 class="card-title pricing-card-title">
+                            @m.Price.ToString("C0")
+                            <small class="text-muted fw-light">/ @m.DurationDays gün</small>
+                        </h1>
+
+                        <ul class="list-unstyled mt-3 mb-4 flex-grow-1">
+                            <li><i class="fas fa-check text-success me-2"></i>Tüm tesislere erişim</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Grup derslerine katılım</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Soyunma odası ve duş</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Ücretsiz otopark</li>
+                        </ul>
+
+                        <form asp-action="Buy" asp-controller="Membership" method="post" class="mt-auto">
+                            <input type="hidden" name="id" value="@m.Id" />
+
+                            @if (m.Name.ToLower().Contains("öğrenci") && !isVerifiedStudent)
+                            {
+                                <button type="submit" class="btn btn-lg btn-secondary w-100" disabled>
+                                    Yalnızca Onaylı Öğrenciler
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-lg btn-warning w-100">
+                                    Hemen Satın Al
+                                </button>
+                            }
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

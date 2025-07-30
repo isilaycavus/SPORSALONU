@@ -1,0 +1,225 @@
+﻿@model SporSalonuMVC.ViewModels.ClassCreateViewModel
+
+@{
+    ViewData["Title"] = "Dersi Düzenle";
+    ViewData["FormAction"] = "Edit";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="form-wrapper">
+        <h2 class="text-center text-warning mb-4">
+            <i class="fas fa-chalkboard-teacher me-2"></i> Dersi Düzenle
+        </h2>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <form asp-action="Edit" method="post" novalidate>
+
+
+
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+
+            <!-- DERS ADI -->
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label fw-semibold text-dark"></label>
+                <select asp-for="Name" class="form-select" id="classNameSelect">
+                    <option value="">-- Ders Türünü Seçin --</option>
+                    <option value="Fitness">Fitness</option>
+                    <option value="Yüzme">Yüzme</option>
+                    <option value="Yoga">Yoga</option>
+                    <option value="Boks">Boks</option>
+                    <option value="Basketbol">Basketbol</option>
+                    <option value="Valeybol">Valeybol</option>
+                    <option value="Pilates">Pilates</option>
+                </select>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <!-- EĞİTMEN -->
+            <div class="mb-3">
+                <label asp-for="TrainerId" class="form-label fw-semibold text-dark"></label>
+                <select asp-for="TrainerId" class="form-select" id="trainerSelect">
+                    <option value="">-- Eğitmen Seçin --</option>
+                    @foreach (var trainer in Model.AvailableTrainers)
+                    {
+                        <option value="@trainer.Id" data-specialty="@trainer.Specialty"
+                                selected="@(Model.TrainerId == trainer.Id ? "selected" : null)">
+                            @trainer.FullName (@trainer.Specialty)
+                        </option>
+                    }
+                </select>
+                <span asp-validation-for="TrainerId" class="text-danger"></span>
+            </div>
+
+            <!-- TARİH -->
+            <div class="mb-3">
+                <label asp-for="Date" class="form-label fw-semibold text-dark"></label>
+                <input asp-for="Date" type="date" class="form-control"
+                       id="dateInput"
+                       autocomplete="off" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+
+
+            </div>
+
+
+            <!-- SAAT -->
+            <div class="mb-3">
+                <label asp-for="SelectedHour" class="form-label fw-semibold text-dark"></label>
+                <select asp-for="SelectedHour" class="form-select" id="hourSelect">
+                    <option value="">-- Saat Seçin --</option>
+                </select>
+                <span asp-validation-for="SelectedHour" class="text-danger"></span>
+            </div>
+
+            <!-- AÇIKLAMA -->
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label fw-semibold text-dark"></label>
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <!-- KONTENJAN -->
+            <div class="mb-3">
+                <label asp-for="Capacity" class="form-label fw-semibold text-dark"></label>
+                <input asp-for="Capacity" type="number" class="form-control" />
+                <span asp-validation-for="Capacity" class="text-danger"></span>
+            </div>
+
+            <!-- KAYDET -->
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary fw-bold px-4">
+                    <i class="fas fa-save me-1"></i> Kaydet
+                </button>
+            </div>
+
+
+        </form>
+    </div>
+</div><!-- form-wrapper -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const fullHours = JSON.parse('@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.HourOptions ?? new List<string>()))');
+            const selectedHour = "@Model.SelectedHour";
+            const dateInput = document.getElementById("dateInput");
+
+            const hourSelect = document.getElementById("hourSelect");
+            const classNameSelect = document.getElementById("classNameSelect");
+            const trainerSelect = document.getElementById("trainerSelect");
+            const originalTrainerOptions = Array.from(trainerSelect.querySelectorAll("option")).slice(1);
+
+            // ✅ Tarih alanı için Türkçe uyarı
+            if (dateInput) {
+                dateInput.addEventListener("invalid", function () {
+                    if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
+                        this.setCustomValidity("Lütfen bugünden itibaren en fazla 7 gün içinde bir tarih seçin.");
+                    } else {
+                        this.setCustomValidity("Lütfen geçerli bir tarih girin.");
+                    }
+                });
+
+                dateInput.addEventListener("input", function () {
+                    this.setCustomValidity("");
+                });
+            }
+
+            function updateHourOptions() {
+                if (!dateInput || !dateInput.value) return;
+
+                const selectedDate = new Date(dateInput.value);
+                const today = new Date();
+                const nowHour = today.getHours();
+
+                if (isNaN(selectedDate.getTime())) return;
+
+                hourSelect.innerHTML = '<option value="">-- Saat Seçin --</option>';
+
+                fullHours.forEach(hour => {
+                    const hourInt = parseInt(hour.split(":")[0], 10);
+                    const isToday = selectedDate.toDateString() === today.toDateString();
+
+                    if (!isToday || hourInt > nowHour) {
+                        const opt = document.createElement("option");
+                        opt.value = hour;
+                        opt.textContent = hour;
+                        if (hour === selectedHour) opt.selected = true;
+                        hourSelect.appendChild(opt);
+                    }
+                });
+            }
+
+            function filterTrainersByClass() {
+                const selectedClass = classNameSelect.value;
+                trainerSelect.innerHTML = '<option value="">-- Eğitmen Seçin --</option>';
+
+                originalTrainerOptions.forEach(option => {
+                    const specialty = option.getAttribute("data-specialty");
+                    if (!selectedClass || specialty === selectedClass) {
+                        trainerSelect.appendChild(option);
+                    }
+                });
+            }
+
+            updateHourOptions();
+            filterTrainersByClass();
+
+            dateInput?.addEventListener("change", updateHourOptions);
+            classNameSelect?.addEventListener("change", filterTrainersByClass);
+        });
+    </script>
+}
+
+@section Styles {
+    <style>
+        body {
+            background-image: url('/images/gym4.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+        }
+
+        .form-wrapper {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(6px);
+            padding: 35px 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            margin: 40px auto;
+        }
+
+        .form-label {
+            font-weight: 600;
+        }
+
+        .form-select,
+        .form-control {
+            border-radius: 8px;
+        }
+
+        .btn-primary {
+            background-color: #ff8c00;
+            border: none;
+            border-radius: 8px;
+        }
+
+            .btn-primary:hover {
+                background-color: #e07600;
+            }
+
+        h2 {
+            font-weight: 700;
+            color: #ff8c00;
+        }
+
+       
+  
+    </style>
+}

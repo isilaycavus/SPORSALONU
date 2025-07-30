@@ -1,0 +1,42 @@
+﻿@model SporSalonuMVC.Models.Trainer
+@{
+    ViewData["Title"] = "Eğitmeni Düzenle";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 fw-bold text-warning">
+        <i class="fas fa-edit me-2"></i> Eğitmeni Düzenle
+    </h2>
+
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label asp-for="FullName" class="form-label">Ad Soyad</label>
+            <input asp-for="FullName" class="form-control" />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Specialty" class="form-label">Uzmanlık</label>
+            <input asp-for="Specialty" class="form-control" />
+            <span asp-validation-for="Specialty" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Hakkında</label>
+            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success fw-bold">
+            <i class="fas fa-save me-1"></i> Kaydet
+        </button>
+
+        <a asp-action="Index" class="btn btn-secondary ms-2">İptal</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

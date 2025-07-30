@@ -1,0 +1,52 @@
+﻿@model List<Membership>
+@{
+    ViewData["Title"] = "Üyelik Paketleri";
+}
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">🏷️ Üyelik Paketleri</h2>
+        <a class="btn btn-success" asp-action="Create">➕ Yeni Paket Ekle</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-center">
+            Henüz üyelik paketi bulunmuyor.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover shadow-sm text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Paket Adı</th>
+                        <th scope="col">Süre (Gün)</th>
+                        <th scope="col">Fiyat</th>
+                        <th scope="col">İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var m in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@m.Name</td>
+                            <td>@m.DurationDays</td>
+                            <td class="text-success fw-bold">₺@m.Price</td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-primary me-1" asp-action="Edit" asp-route-id="@m.Id">✏️ Düzenle</a>
+
+                                <form asp-action="Delete" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@m.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">🗑️ Sil</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

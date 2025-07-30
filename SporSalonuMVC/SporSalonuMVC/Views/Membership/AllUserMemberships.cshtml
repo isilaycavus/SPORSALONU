@@ -1,0 +1,85 @@
+﻿@model List<UserMembership>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Tüm Kullanıcı Üyelikleri";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0"><i class="fas fa-id-card-alt me-2"></i> Tüm Kullanıcı Üyelikleri</h4>
+        </div>
+        <div class="card-body p-4">
+
+            @if (TempData["SuccessMembership"] != null)
+            {
+                <div class="alert alert-success">@TempData["SuccessMembership"]</div>
+            }
+            @if (TempData["ErrorMembership"] != null)
+            {
+                <div class="alert alert-danger">@TempData["ErrorMembership"]</div>
+            }
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Kullanıcı</th>
+                            <th>Paket</th>
+                            <th>Başlangıç</th>
+                            <th>Bitiş</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@item.User?.FullName</strong><br />
+                                    <small class="text-muted">@item.User?.Email</small>
+                                </td>
+                                <td>@item.Membership?.Name</td>
+                                <td>@item.StartDate.ToString("dd.MM.yyyy")</td>
+                                <td>@item.EndDate.ToString("dd.MM.yyyy")</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmModal-@item.Id">
+                                        İptal Et
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="confirmModal-@item.Id" tabindex="-1" aria-labelledby="confirmLabel-@item.Id" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-danger text-white">
+                                                    <h5 class="modal-title" id="confirmLabel-@item.Id">Üyelik İptali</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p><strong>@item.User?.FullName</strong> kullanıcısının <strong>@item.Membership?.Name</strong> üyeliğini iptal etmek istediğinize emin misiniz?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <form asp-action="DeleteUserMembership" asp-controller="Membership" method="post">
+                                                        <input type="hidden" name="id" value="@item.Id" />
+                                                        <button type="submit" class="btn btn-danger">Evet, İptal Et</button>
+                                                    </form>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Bu sadece FontAwesome içindir, bootstrap.bundle yok burada -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+}

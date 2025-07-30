@@ -1,0 +1,81 @@
+﻿@model List<Reservation>
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold text-warning">
+            <i class="fas fa-calendar-check me-2"></i> Rezervasyonlarım
+        </h2>
+        <p class="text-muted">Tüm aktif rezervasyonlarınızı buradan görüntüleyebilirsiniz.</p>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            <i class="fas fa-info-circle me-2"></i> Henüz bir rezervasyonunuz bulunmamaktadır.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover shadow-sm">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th scope="col">Ders</th>
+                        <th scope="col">Eğitmen</th>
+                        <th scope="col">Tarih</th>
+                        <th scope="col">İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model.OrderBy(r => r.Class!.Schedule))
+                    {
+                        <tr class="align-middle text-center">
+                            <td>@r.Class!.Name</td>
+                            <td>@r.Class.Trainer!.FullName</td>
+                            <td>@r.Class.Schedule.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>
+                                <button type="button"
+                                        class="btn btn-outline-danger btn-sm"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#cancelModal_@r.Id">
+                                    <i class="fas fa-times-circle me-1"></i> İptal Et
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="cancelModal_@r.Id" tabindex="-1" aria-labelledby="modalLabel_@r.Id" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-danger text-white">
+                                                <h5 class="modal-title" id="modalLabel_@r.Id">
+                                                    Rezervasyon İptali
+                                                </h5>
+                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <p>
+                                                    <strong>@r.Class.Name</strong> dersi için<br />
+                                                    <strong>@r.Class.Schedule.ToString("dd.MM.yyyy HH:mm")</strong> tarihinde yapılmış rezervasyonu iptal etmek istediğinize emin misiniz?
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer justify-content-center">
+                                                <form asp-action="Cancel" method="post">
+                                                    <input type="hidden" name="id" value="@r.Id" />
+                                                    <button type="submit" class="btn btn-danger">Evet, İptal Et</button>
+                                                </form>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+}

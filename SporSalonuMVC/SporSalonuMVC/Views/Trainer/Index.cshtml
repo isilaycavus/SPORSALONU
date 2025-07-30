@@ -1,0 +1,99 @@
+﻿@model List<Trainer>
+@{
+    Layout = "_Layout";
+    var isAdmin = Context.Session.GetString("UserRole") == "Admin";
+}
+
+<div class="container mt-4">
+
+    @if (isAdmin)
+    {
+        <div class="d-flex justify-content-end mb-3">
+            <a href="/Trainer/Create" class="btn btn-warning fw-bold">
+                <i class="fas fa-user-plus me-1"></i> Yeni Eğitmen Ekle
+            </a>
+        </div>
+    }
+
+    <h2 class="mb-4 fw-semibold text-center">
+        <i class="fas fa-chalkboard-teacher text-primary me-2"></i> Eğitmen Listesi
+    </h2>
+
+    @if (TempData["ErrorTrainer"] != null)
+    {
+        <div class="alert alert-danger text-center fw-bold">
+            <i class="fas fa-exclamation-triangle me-1"></i> @TempData["ErrorTrainer"]
+        </div>
+    }
+    @if (TempData["SuccessTrainer"] != null)
+    {
+        <div class="alert alert-success text-center fw-bold">
+            <i class="fas fa-check-circle me-1"></i> @TempData["SuccessTrainer"]
+        </div>
+    }
+
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-hover align-middle text-center table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th><i class="fas fa-user me-1"></i> Ad Soyad</th>
+                    <th><i class="fas fa-star me-1"></i> Uzmanlık</th>
+                    <th><i class="fas fa-info-circle me-1"></i> Hakkında</th>
+                    <th><i class="fas fa-cogs me-1"></i> İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var trainer in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@trainer.FullName</td>
+                        <td>@trainer.Specialty</td>
+                        <td class="text-muted">@trainer.Description</td>
+                        <td>
+                            <a asp-action="Calendar" asp-route-id="@trainer.Id" class="btn btn-sm btn-outline-primary me-1">
+                                <i class="fas fa-calendar-alt me-1"></i> Takvim
+                            </a>
+
+                            @if (isAdmin)
+                            {
+                                <a asp-action="Edit" asp-route-id="@trainer.Id" class="btn btn-sm btn-outline-warning me-1">
+                                    <i class="fas fa-edit me-1"></i> Düzenle
+                                </a>
+
+                                <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-@trainer.Id">
+                                    <i class="fas fa-trash-alt me-1"></i> Sil
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="deleteModal-@trainer.Id" tabindex="-1" aria-labelledby="deleteModalLabel-@trainer.Id" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-danger text-white">
+                                                <h5 class="modal-title" id="deleteModalLabel-@trainer.Id">Eğitmeni Sil</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p><strong>@trainer.FullName</strong> adlı eğitmeni silmek istediğinize emin misiniz?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form asp-action="Delete" asp-route-id="@trainer.Id" method="post">
+                                                    <button type="submit" class="btn btn-danger">Evet, Sil</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Sadece FontAwesome burada gerekli, Bootstrap zaten layoutta yüklü -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+}

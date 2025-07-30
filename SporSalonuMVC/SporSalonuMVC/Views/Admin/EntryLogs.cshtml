@@ -1,0 +1,76 @@
+﻿@model List<SporSalonuMVC.Models.EntryLog>
+
+@{
+    ViewBag.Title = "Giriş / Çıkış Kayıtları";
+}
+
+<div class="container mt-4">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold text-warning">🟢 Giriş / Çıkış Kayıtları</h2>
+        <p class="text-muted">Üyelerin giriş-çıkış zamanlarını buradan takip edebilirsiniz.</p>
+    </div>
+
+    <div class="table-responsive shadow-lg rounded-4 overflow-hidden border border-warning">
+        <table class="table table-hover align-middle mb-0 bg-white">
+            <thead class="table-dark text-warning">
+                <tr>
+                    <th scope="col"><i class="fas fa-user me-1"></i>Ad Soyad</th>
+                    <th scope="col"><i class="fas fa-id-card me-1"></i>Kart No</th>
+                    <th scope="col"><i class="fas fa-sign-in-alt me-1"></i>Giriş Saati</th>
+                    <th scope="col"><i class="fas fa-sign-out-alt me-1"></i>Çıkış Saati</th>
+                    <th scope="col"><i class="fas fa-check-circle me-1"></i>Durum</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var log in Model)
+                {
+                    var giris = log.EntryTime.ToLocalTime().ToString("g");
+                    var cikis = log.ExitTime?.ToLocalTime().ToString("g") ?? "";
+                    var durum = log.ExitTime.HasValue ? "Çıkış Yapıldı" : "Tesiste";
+
+                    <tr>
+                        <td>@log.UserCard?.User?.FullName</td>
+                        <td class="text-monospace">@log.UserCard?.CardNumber</td>
+                        <td>@giris</td>
+                        <td>@(string.IsNullOrEmpty(cikis) ? "–" : cikis)</td>
+                        <td>
+                            <span class="badge rounded-pill @(log.ExitTime.HasValue ? "bg-secondary" : "bg-success")">
+                                @durum
+                            </span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        body {
+            background: linear-gradient(135deg, #1f1f1f, #343a40);
+            color: #f8f9fa;
+        }
+
+        .table th,
+        .table td {
+            vertical-align: middle;
+        }
+
+        .table td {
+            color: #212529;
+        }
+
+        .badge {
+            font-size: 0.9rem;
+        }
+
+        h2::before {
+            content: "📋 ";
+        }
+
+        .text-monospace {
+            font-family: monospace;
+        }
+    </style>
+}

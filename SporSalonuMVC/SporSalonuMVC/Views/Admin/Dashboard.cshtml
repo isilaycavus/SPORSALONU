@@ -1,0 +1,149 @@
+﻿@model AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Paneli";
+}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+
+<style>
+    .rounded-card {
+        border-radius: 1rem !important;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .section-title i {
+        margin-right: 8px;
+    }
+
+    .card h6 {
+        font-weight: 500;
+    }
+
+    .card h4 {
+        font-size: 1.6rem;
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+
+    .table th {
+        vertical-align: middle;
+    }
+
+    .equal-height {
+        height: 150px;
+        min-height: 150px;
+    }
+</style>
+
+<div class="container py-4">
+    <!-- Başlık -->
+    <div class="text-center mb-4">
+        <h2 class="fw-bold display-5">📊 Admin Paneli</h2>
+        <p class="text-muted">Genel özet ve finansal durumu aşağıda görebilirsiniz.</p>
+    </div>
+
+    <!-- Bilgi Kartları -->
+    <div class="row text-center">
+        <div class="col-md-3 mb-3">
+            <div class="card border-primary border-2 shadow-sm rounded-card">
+                <div class="card-body">
+                    <h6 class="text-muted">Kullanıcı Sayısı</h6>
+                    <h4 class="fw-bold">@Model.TotalUsers</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-success border-2 shadow-sm rounded-card">
+                <div class="card-body">
+                    <h6 class="text-muted">Aktif Üyelik</h6>
+                    <h4 class="fw-bold">@Model.ActiveMemberships</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-info border-2 shadow-sm rounded-card">
+                <div class="card-body">
+                    <h6 class="text-muted">Eğitmen Sayısı</h6>
+                    <h4 class="fw-bold">@Model.TotalTrainers</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-warning border-2 shadow-sm rounded-card">
+                <div class="card-body">
+                    <h6 class="text-muted">Bugünkü Ders</h6>
+                    <h4 class="fw-bold">@Model.TodayClasses</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aylık Gelir & En Popüler Paket -->
+    <div class="row mt-4 text-center">
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm bg-light rounded-card equal-height">
+                <div class="card-body d-flex flex-column justify-content-center h-100">
+                    <h6 class="text-muted">Aylık Gelir</h6>
+                    <h3 class="fw-bold text-success">₺@Model.MonthlyRevenue</h3>
+                    <p class="text-muted mb-0">(@DateTime.Now.ToString("MMMM yyyy"))</p>
+                </div>
+            </div>
+        </div>
+        @if (!string.IsNullOrEmpty(Model.MostPopularPackage))
+        {
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm bg-light rounded-card equal-height">
+                    <div class="card-body d-flex flex-column justify-content-center h-100">
+                        <h6 class="text-muted">En Popüler Üyelik Paketi</h6>
+                        <h4 class="fw-bold text-primary">
+                            📦 @Model.MostPopularPackage
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+
+    <!-- Paket Bazlı Toplam Gelir -->
+    <div class="mt-5">
+        <div class="section-title">
+            <i class="fas fa-box-open text-dark"></i> Paket Bazlı Toplam Gelir
+        </div>
+
+        @if (Model.PackageRevenue != null && Model.PackageRevenue.Any())
+        {
+            <table class="table table-bordered w-75 mx-auto shadow-sm">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>Paket Adı</th>
+                        <th>Toplam Gelir</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    @foreach (var item in Model.PackageRevenue)
+                    {
+                        <tr>
+                            <td>@item.Key</td>
+                            <td class="text-success fw-bold">₺@item.Value</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="text-center text-muted mt-3">Hiç veri bulunamadı.</div>
+        }
+    </div>
+</div>

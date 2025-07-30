@@ -1,0 +1,200 @@
+﻿@model List<Class>
+@{
+    var isLoggedIn = Context.Session.GetString("UserEmail") != null;
+    var isAdmin = Context.Session.GetString("UserRole") == "Admin";
+    var reservedClassIds = ViewBag.UserReservedClassIds as List<int> ?? new List<int>();
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold display-5 text-gradient">
+            <i class="fas fa-calendar-week me-2"></i> Ders Programı
+        </h2>
+        <p class="text-muted fs-5">Hedefine ulaşmak için bugün bir adım at.</p>
+    </div>
+
+    @if (TempData["ErrorClass"] != null)
+    {
+        <div class="alert alert-danger"><i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorClass"]</div>
+    }
+    @if (TempData["SuccessClass"] != null)
+    {
+        <div class="alert alert-success"><i class="fas fa-check-circle me-2"></i>@TempData["SuccessClass"]</div>
+    }
+
+    <div class="row g-4">
+        @foreach (var item in Model)
+        {
+            var isFull = item.Reservations?.Count() >= item.Capacity;
+            var isReserved = reservedClassIds.Contains(item.Id);
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100 border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">
+                            <i class="fas fa-dumbbell me-2"></i> @item.Name
+                        </h5>
+                        <p class="card-text mb-1">
+                            <i class="fas fa-user-tie text-secondary me-1"></i>
+                            <strong>Eğitmen:</strong> @(item.Trainer?.FullName ?? "Belirtilmedi")
+                        </p>
+                        <p class="card-text mb-1">
+                            <i class="fas fa-calendar-alt text-secondary me-1"></i>
+                            <strong>Tarih:</strong> @item.Schedule.ToString("dd.MM.yyyy HH:mm")
+                        </p>
+                        <p class="card-text text-muted small">
+                            <i class="fas fa-info-circle me-1"></i> @item.Description
+                        </p>
+                    </div>
+                    <div class="card-footer bg-white border-0 text-center">
+                        @if (isAdmin)
+                        {
+                            <!-- Sil butonu -->
+                            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal-@item.Id">
+                                <i class="fas fa-trash-alt me-1"></i> Sil
+                            </button>
+                            <!-- Düzenle butonu -->
+                            <a asp-action="Edit" asp-controller="Class" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm ms-2">
+                                <i class="fas fa-edit me-1"></i> Düzenle
+                            </a>
+
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="deleteModal-@item.Id" tabindex="-1" aria-labelledby="deleteModalLabel-@item.Id" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content border-danger">
+                                        <div class="modal-header bg-danger text-white">
+                                            <h5 class="modal-title" id="deleteModalLabel-@item.Id">
+                                                <i class="fas fa-exclamation-triangle me-2"></i> Dersi Sil
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p><strong>@item.Name</strong> adlı dersi silmek istediğinize emin misiniz?</p>
+                                            <p class="text-muted small mb-0">Bu işlem geri alınamaz.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form asp-action="Delete" asp-controller="Class" method="post">
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <button type="submit" class="btn btn-danger">Evet, Sil</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        else if (isLoggedIn)
+                        {
+                            if (isReserved)
+                            {
+                                <button class="btn btn-outline-secondary btn-sm" disabled>
+                                    <i class="fas fa-check me-1"></i> Rezerve Edildi
+                                </button>
+                            }
+                            else if (!isFull)
+                            {
+                                <form asp-controller="Reservation" asp-action="Create" method="post">
+                                    <input type="hidden" name="classId" value="@item.Id" />
+                                    <button class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-calendar-plus me-1"></i> Rezervasyon Yap
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <button class="btn btn-outline-warning btn-sm" disabled>
+                                    <i class="fas fa-ban me-1"></i> Kontenjan Dolu
+                                </button>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+<!-- FontAwesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+
+@section Styles {
+    <style>
+        body {
+            background-image: url('/images/dersler.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.92); /* Hafif şeffaf beyaz */
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+
+        .weekly-wrapper {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .weekly-title {
+            text-align: center;
+            font-size: 2.2rem;
+            color: #007bff;
+            margin-bottom: 40px;
+        }
+
+        .weekly-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .lesson-card {
+            background: linear-gradient(145deg, #ffffff, #eaf0ff);
+            border-left: 6px solid #007bff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+            transition: 0.3s ease;
+        }
+
+            .lesson-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+            }
+
+            .lesson-card h4 {
+                color: #003366;
+                margin-bottom: 12px;
+            }
+
+        .lesson-info p {
+            margin: 4px 0;
+            color: #495057;
+            font-size: 0.95rem;
+        }
+
+        .lesson-info i {
+            margin-right: 8px;
+            color: #007bff;
+        }
+
+        @@media (max-width: 576px) {
+            .weekly-title
+
+        {
+            font-size: 1.5rem;
+        }
+
+        }
+    </style>
+}

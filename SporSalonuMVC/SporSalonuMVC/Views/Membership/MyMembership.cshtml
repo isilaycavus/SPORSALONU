@@ -1,0 +1,753 @@
+﻿@model UserMembership
+
+@{
+    ViewData["Title"] = "Üyelik Durumum";
+}
+
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        --danger-gradient: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        --card-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        --card-shadow-hover: 0 30px 80px rgba(0, 0, 0, 0.15);
+        --border-radius: 24px;
+        --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .membership-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: var(--transition);
+    }
+
+        .membership-container.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        opacity: 0;
+        transform: translateY(-30px);
+        transition: var(--transition);
+    }
+
+        .page-header.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    .page-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+        letter-spacing: -0.02em;
+        transition: var(--transition);
+    }
+
+        .page-title:hover {
+            transform: scale(1.02);
+        }
+
+    .page-subtitle {
+        font-size: 1.25rem;
+        color: #64748b;
+        font-weight: 400;
+        max-width: 600px;
+        margin: 0 auto;
+        transition: var(--transition);
+    }
+
+    .membership-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: var(--border-radius);
+        box-shadow: var(--card-shadow);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: var(--transition);
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+        .membership-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .membership-card:hover {
+            box-shadow: var(--card-shadow-hover);
+            transform: translateY(-5px);
+        }
+
+    .membership-overview {
+        background: var(--primary-gradient);
+        border-radius: var(--border-radius);
+        padding: 3rem 2rem;
+        text-align: center;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateX(30px);
+        transition: var(--transition);
+    }
+
+        .membership-overview.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .membership-overview::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(0deg);
+            transition: transform 20s linear;
+        }
+
+        .membership-overview:hover::before {
+            transform: rotate(360deg);
+        }
+
+    .membership-icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 1;
+        transition: var(--transition);
+        transform: translateY(0);
+    }
+
+        .membership-icon:hover {
+            transform: translateY(-10px) scale(1.1);
+        }
+
+    .membership-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+        transition: var(--transition);
+    }
+
+    .membership-subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 1;
+        transition: var(--transition);
+    }
+
+    .days-counter {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        padding: 1.5rem;
+        backdrop-filter: blur(10px);
+        position: relative;
+        z-index: 1;
+        transition: var(--transition);
+    }
+
+        .days-counter:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+    .days-number {
+        font-size: 4rem;
+        font-weight: 900;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: var(--transition);
+    }
+
+    .days-label {
+        font-size: 1.2rem;
+        font-weight: 600;
+        opacity: 0.9;
+        transition: var(--transition);
+    }
+
+    .details-card {
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 2.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        height: 100%;
+        opacity: 0;
+        transform: translateX(-30px);
+        transition: var(--transition);
+    }
+
+        .details-card.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+    .details-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 2rem;
+        position: relative;
+        padding-bottom: 1rem;
+        transition: var(--transition);
+    }
+
+        .details-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .details-title:hover::after {
+            width: 120px;
+        }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem 0;
+        border-bottom: 1px solid #f1f5f9;
+        transition: var(--transition);
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+        .detail-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-item:hover {
+            background: #f8fafc;
+            margin: 0 -1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            transform: translateX(5px);
+        }
+
+    .detail-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        font-size: 1.2rem;
+        transition: var(--transition);
+    }
+
+        .detail-icon:hover {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        .detail-icon.calendar {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+
+        .detail-icon.check {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .detail-icon.credit {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+        }
+
+        .detail-icon.user {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+    .detail-content {
+        flex: 1;
+        transition: var(--transition);
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.25rem;
+        transition: var(--transition);
+    }
+
+    .detail-value {
+        color: #6b7280;
+        font-weight: 500;
+        transition: var(--transition);
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: var(--transition);
+    }
+
+        .status-badge:hover {
+            transform: scale(1.05);
+        }
+
+        .status-badge.success {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            color: #166534;
+        }
+
+        .status-badge.primary {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: #1e40af;
+        }
+
+    .alert-card {
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        margin-top: 2rem;
+        border-left: 4px solid;
+        transition: var(--transition);
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+        .alert-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    .alert-warning {
+        border-left-color: #f59e0b;
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+    }
+
+    .alert-danger {
+        border-left-color: #ef4444;
+        background: linear-gradient(135deg, #fee2e2, #fecaca);
+    }
+
+        .alert-danger:hover {
+            transform: translateX(5px);
+        }
+
+    .action-buttons {
+        text-align: center;
+        margin-top: 3rem;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: var(--transition);
+    }
+
+        .action-buttons.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    .btn-modern {
+        display: inline-flex;
+        align-items: center;
+        padding: 1rem 2rem;
+        border-radius: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: var(--transition);
+        border: none;
+        cursor: pointer;
+        font-size: 1.1rem;
+        margin: 0.5rem;
+        position: relative;
+        overflow: hidden;
+        transform: translateY(0);
+    }
+
+        .btn-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-modern:hover::before {
+            left: 100%;
+        }
+
+        .btn-modern:hover {
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .btn-modern:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+    .btn-primary {
+        background: var(--primary-gradient);
+        color: white;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+
+        .btn-primary:hover {
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+    .btn-outline {
+        background: white;
+        color: #64748b;
+        border: 2px solid #e2e8f0;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    }
+
+        .btn-outline:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+    .btn-success {
+        background: var(--success-gradient);
+        color: white;
+        box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4);
+    }
+
+        .btn-success:hover {
+            box-shadow: 0 15px 40px rgba(79, 172, 254, 0.6);
+        }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: var(--transition);
+    }
+
+        .empty-state.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    .empty-icon {
+        font-size: 6rem;
+        color: #cbd5e1;
+        margin-bottom: 2rem;
+        transition: var(--transition);
+        transform: translateY(0);
+    }
+
+        .empty-icon:hover {
+            transform: translateY(-10px);
+            color: #94a3b8;
+        }
+
+    .empty-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 1rem;
+        transition: var(--transition);
+    }
+
+    .empty-subtitle {
+        font-size: 1.2rem;
+        color: #64748b;
+        margin-bottom: 2rem;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        transition: var(--transition);
+    }
+
+  
+        .page-title
+
+    {
+        font-size: 2.5rem;
+    }
+
+    .membership-overview {
+        padding: 2rem 1.5rem;
+    }
+
+    .details-card {
+        padding: 2rem;
+    }
+
+    .days-number {
+        font-size: 3rem;
+    }
+
+    .btn-modern {
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    }
+
+    /* Loading states */
+    .loading {
+        opacity: 0.6;
+        pointer-events: none;
+    }
+
+    /* Focus states for accessibility */
+    .btn-modern:focus {
+        outline: 2px solid #667eea;
+        outline-offset: 2px;
+    }
+
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
+
+<div class="membership-container">
+    @* 💬 Satın alma sonrası başarı mesajı gösterimi (her durumda) *@
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="page-header">
+        <h1 class="page-title">Üyelik Durumum</h1>
+        <p class="page-subtitle">Aktif üyeliğinizin detaylarını ve kalan sürenizi buradan takip edebilirsiniz</p>
+    </div>
+
+    @if (Model != null)
+    {
+        var kalanGun = (Model.EndDate - DateTime.UtcNow).Days;
+
+        <div class="membership-card">
+            <div class="row g-0">
+                <div class="col-lg-6">
+                    <div class="membership-overview">
+                        <div class="membership-icon">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <h2 class="membership-title">@Model.Membership?.Name</h2>
+                        <p class="membership-subtitle">Aktif Üyelik Paketiniz</p>
+
+                        <div class="days-counter">
+                            <div class="days-number">@kalanGun</div>
+                            <div class="days-label">Gün Kaldı</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="details-card">
+                        <h3 class="details-title">Üyelik Detayları</h3>
+
+                        <div class="detail-item">
+                            <div class="detail-icon calendar">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="detail-content">
+                                <div class="detail-label">Başlangıç Tarihi</div>
+                                <div class="detail-value">@Model.StartDate.ToShortDateString()</div>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <div class="detail-icon check">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="detail-content">
+                                <div class="detail-label">Bitiş Tarihi</div>
+                                <div class="detail-value">@Model.EndDate.ToShortDateString()</div>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <div class="detail-icon credit">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <div class="detail-content">
+                                <div class="detail-label">Ödeme Durumu</div>
+                                <div class="detail-value">
+                                    <span class="status-badge success">
+                                        <i class="fas fa-check-circle me-1"></i>
+                                        Ödenmiş
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <div class="detail-icon user">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <div class="detail-content">
+                                <div class="detail-label">Hesap Durumu</div>
+                                <div class="detail-value">
+                                    <span class="status-badge primary">
+                                        <i class="fas fa-shield-alt me-1"></i>
+                                        Aktif
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (kalanGun <= 15)
+                        {
+                            <div class="alert-card @(kalanGun <= 3 ? "alert-danger" : "alert-warning")">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-exclamation-triangle me-3 fs-4"></i>
+                                    <div>
+                                        <strong>Dikkat!</strong> Üyeliğinizin bitmesine <strong>@kalanGun gün</strong> kaldı.
+                                        Kesintisiz hizmet için lütfen üyeliğinizi yenileyin.
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <div class="membership-card">
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-user-times"></i>
+                </div>
+                <h2 class="empty-title">Aktif Üyeliğiniz Bulunmuyor</h2>
+                <p class="empty-subtitle">
+                    Fitness yolculuğunuza başlamak için size en uygun paketi seçin ve
+                    sağlıklı yaşam tarzınızı hemen benimseyin.
+                </p>
+
+                <a asp-action="Available" asp-controller="Membership" class="btn-modern btn-success">
+
+                    <i class="fas fa-shopping-cart me-2"></i>
+                    Hemen Paket Satın Al
+                </a>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Progressive loading animation
+            setTimeout(() => {
+                document.querySelector('.membership-container')?.classList.add('loaded');
+            }, 100);
+
+            setTimeout(() => {
+                document.querySelector('.page-header')?.classList.add('visible');
+            }, 200);
+
+            setTimeout(() => {
+                document.querySelector('.membership-card')?.classList.add('visible');
+            }, 400);
+
+            setTimeout(() => {
+                document.querySelector('.membership-overview')?.classList.add('visible');
+            }, 600);
+
+            setTimeout(() => {
+                document.querySelector('.details-card')?.classList.add('visible');
+            }, 800);
+
+            const detailItems = document.querySelectorAll('.detail-item');
+            detailItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.classList.add('visible');
+                }, 1000 + (index * 100));
+            });
+
+            setTimeout(() => {
+                document.querySelector('.alert-card')?.classList.add('visible');
+            }, 1400);
+
+            setTimeout(() => {
+                document.querySelector('.action-buttons')?.classList.add('visible');
+            }, 1600);
+
+            setTimeout(() => {
+                document.querySelector('.empty-state')?.classList.add('visible');
+            }, 600);
+
+            document.querySelectorAll('.btn-modern').forEach(button => {
+                button.addEventListener('mouseenter', function () {
+                    this.style.transform = 'translateY(-3px) scale(1.02)';
+                });
+                button.addEventListener('mouseleave', function () {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+                button.addEventListener('mousedown', function () {
+                    this.style.transform = 'translateY(-1px) scale(0.98)';
+                });
+                button.addEventListener('mouseup', function () {
+                    this.style.transform = 'translateY(-3px) scale(1.02)';
+                });
+            });
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', function () {
+                    this.classList.add('loading');
+                });
+            });
+        });
+    </script>
+}
